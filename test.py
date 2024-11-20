@@ -6,7 +6,7 @@
 
 a = {"name":"하하","phone":"010-1234-1234","email":"@"}
 
-b=input("key : ")
+b = input("key : ")
 
 print(a.get(f'{b}', "값이 없습니다."))
 
