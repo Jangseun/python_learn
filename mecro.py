@@ -1,29 +1,35 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from webdriver_manager.chrome import ChromeDriverManager
-import time
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-# 새로고침할 웹사이트 URL
-url = 'https://srobot.sen.hs.kr/'
+# Chrome 드라이버 경로 설정
+chrome_driver_path = "C:\Program Files\Google\Chrome\Application\chrome.exe"
 
-# ChromeDriver를 자동으로 다운로드 및 설정
-driver = webdriver.Chrome(ChromeDriverManager().install())
+# Chrome 옵션 설정 (디버깅 모드 활성화)
+options = Options()
+options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
+
+# Chrome 드라이버 시작
+driver = webdriver.Chrome(executable_path=chrome_driver_path, options=options)
 
 try:
-    # 지정된 URL 열기
-    driver.get(url)
-    
-    # 새로고침 주기를 설정 (초 단위)
-    refresh_interval = 10  # 10초 간격으로 새로고침
-    
-    while True:
-        time.sleep(refresh_interval)
-        driver.refresh()  # 새로고침 실행
-        print(f"웹사이트를 새로고침했습니다: {url}")
-        
+    # 웹 페이지 열기 (실제 URL로 변경)
+    driver.get("https://www.example.com")
+
+    # 특정 요소 클릭 (CSS 선택자 예시)
+    element = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, "#GradeDetail > div > ul > li > a"))
+    )
+    element.click()
+
+    # 원하는 동작 수행 (예: 다른 페이지로 이동, 데이터 추출 등)
+    # ...
+
 except KeyboardInterrupt:
-    # 사용자가 프로그램을 중지했을 때 처리
-    print("프로그램 종료")
+    print("프로그램을 종료합니다.")
+except Exception as e:
+    print(f"오류 발생: {e}")
 finally:
-    # 웹 드라이버 종료
     driver.quit()
