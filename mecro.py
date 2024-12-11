@@ -1,35 +1,60 @@
-from selenium import webdriver
+
+
+
+
+# from selenium import webdriver
+# from selenium.webdriver.common.by import By
+# from webdriver_manager.chrome import ChromeDriverManager
+# from selenium.webdriver.chrome.options import Options
+
+# import time
+
+
+
+
+# # ChromeDriver를 자동으로 다운로드 및 설정
+# driver = webdriver.Chrome(ChromeDriverManager().install())
+
+# options = Options()  ## Create a ChromeOptions object
+# driver = webdriver.Chrome(options=options)  ## Pass options to the Chrome driver
+
+import time
+from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
-# Chrome 드라이버 경로 설정
+#동작(동적 웹크롤링)
+from selenium.webdriver import ActionChains
+
+chrome_options = Options()
+chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
+
+# Chrome 드라이버 경로 (다운로드한 ChromeDriver 경로로 수정)
 chrome_driver_path = "C:\Program Files\Google\Chrome\Application\chrome.exe"
 
-# Chrome 옵션 설정 (디버깅 모드 활성화)
-options = Options()
-options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
+# Chrome 드라이버 설정
+driver = Chrome(options=chrome_options)
 
-# Chrome 드라이버 시작
-driver = webdriver.Chrome(executable_path=chrome_driver_path, options=options)
+# 드라이버에 동작을 실행시키는 명령어를 act로 지정
+act = ActionChains(driver)
+
 
 try:
-    # 웹 페이지 열기 (실제 URL로 변경)
-    driver.get("https://www.example.com")
+    while True:
+        element1 = act.find_element_by_css_select('.box')
+        act.send_keys('\n')
+        print("새로고침")
 
-    # 특정 요소 클릭 (CSS 선택자 예시)
-    element = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, "#GradeDetail > div > ul > li > a"))
-    )
-    element.click()
 
-    # 원하는 동작 수행 (예: 다른 페이지로 이동, 데이터 추출 등)
-    # ...
-
+    
+    
+    # while True:
+    #     driver.refresh()  # 새로고침 실행
+    #     print("새로고침")
+        
 except KeyboardInterrupt:
-    print("프로그램을 종료합니다.")
-except Exception as e:
-    print(f"오류 발생: {e}")
+    # 사용자가 프로그램을 중지했을 때 처리
+    print("프로그램 종료")
 finally:
+    # 웹 드라이버 종료
     driver.quit()
