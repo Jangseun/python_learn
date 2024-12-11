@@ -26,6 +26,10 @@ from selenium.webdriver.chrome.options import Options
 #동작(동적 웹크롤링)
 from selenium.webdriver import ActionChains
 
+#ㅁ몰ㄹ루
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 chrome_options = Options()
 chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
 
@@ -41,12 +45,16 @@ act = ActionChains(driver)
 
 try:
     while True:
-        element1 = act.find_element_by_css_select('.box')
-        act.send_keys('\n')
-        print("새로고침")
+        # element1 = act.find_element_by_css_select('.box')
+        # act.send_keys('\n')
+        # print("새로고침")
+        element = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, '.box'))
+        )
+
+        element.click()
 
 
-    
     
     # while True:
     #     driver.refresh()  # 새로고침 실행
